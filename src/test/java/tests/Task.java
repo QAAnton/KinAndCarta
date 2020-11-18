@@ -3,6 +3,7 @@ package tests;
 import amazon_pages.AmazonLandingPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import utilities.Driver;
 
@@ -13,7 +14,7 @@ public class Task {
 
         AmazonLandingPage amazonLandingPage = new AmazonLandingPage();
         /*
-         tests.Task
+         Task
          Given user navigates to www.amazon.com
          And searched for Alexa
          And navigates to the second page
@@ -26,17 +27,19 @@ public class Task {
         // Execution
         // user navigates to www.amazon.com
         Driver.getDriver().get("http://www.amazon.com");
+
         // searched for Alexa
         amazonLandingPage.searchBox.sendKeys(nameToSearch + Keys.ENTER);
 
+        // getting text of the 3rd item for comparison later
         String itemAdded = amazonLandingPage.thirdItemResult.getText();
 
         //selects the third item
         amazonLandingPage.thirdItemResult.click();
-        Thread.sleep(2000); // wait until page fully loaded
+        //Thread.sleep(2000); // wait until page fully loaded
         // user adds item to cart
         amazonLandingPage.addToCartButton.click();
-        Thread.sleep(2000); // wait until any pop up window shows up (if present)
+        Thread.sleep(3000); // wait until any pop up window shows up (if present)
 
         if (Driver.getDriver().findElement(By.xpath("//button[@aria-label='Close']")).isDisplayed()) {
             Driver.getDriver().findElement(By.xpath("//button[@aria-label='Close']")).click();
@@ -48,13 +51,9 @@ public class Task {
 
         String actualItemInCart = amazonLandingPage.itemInCart.getText();
 
-        if(actualItemInCart.contains(itemAdded)){
-            System.out.println("User is able to add item to cart - PASS");
-        } else {
-            System.out.println("User was NOT able to add item to cart - FAIL");
-        }
 
-
+        // Assertion of item in cart was the item added
+        Assert.assertTrue(actualItemInCart.contains(itemAdded));
 
 
 
