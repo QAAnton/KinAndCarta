@@ -1,5 +1,6 @@
 package tests;
 
+import amazon_pages.AmazonLandingPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -11,6 +12,7 @@ import utilities.Driver;
 public class Task {
     public static void main(String[] args) throws InterruptedException {
 
+        AmazonLandingPage amazonLandingPage = new AmazonLandingPage();
         /*
          tests.Task
          Given user navigates to www.amazon.com
@@ -20,22 +22,13 @@ public class Task {
          Then assert that the item would be available for purchase (the user would be able to add it to the cart)
          */
 
-
-        // I can keep all locators as Strings here, but usually I store them as POM (separate classes for different pages)
-        String searchBox_id = "twotabsearchtextbox";
         String nameToSearch = "Alexa";
-        String thirdItemResult_XPATH = "(//div[@class='a-section aok-relative s-image-fixed-height'])[3]";
-        String addToCartButton_id = "add-to-cart-button";
-        String cartButton_id = "nav-cart";
-        String itemInCart_xpath = "//span[@class='a-size-medium sc-product-title a-text-bold']";
 
-
-
-        // execution:
+        // Execution
         // user navigates to www.amazon.com
         Driver.getDriver().get("http://www.amazon.com");
         // searched for Alexa
-        Driver.getDriver().findElement(By.id(searchBox_id)).sendKeys(nameToSearch + Keys.ENTER);
+        amazonLandingPage.searchBox.sendKeys(nameToSearch + Keys.ENTER);
 
         String itemAdded = Driver.getDriver().findElement(By.xpath(thirdItemResult_XPATH)).getText();
 
