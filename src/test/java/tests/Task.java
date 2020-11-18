@@ -1,15 +1,18 @@
+package tests;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import utilities.Driver;
 
 public class Task {
     public static void main(String[] args) throws InterruptedException {
 
         /*
-         Task
+         tests.Task
          Given user navigates to www.amazon.com
          And searched for Alexa
          And navigates to the second page
@@ -27,34 +30,29 @@ public class Task {
         String itemInCart_xpath = "//span[@class='a-size-medium sc-product-title a-text-bold']";
 
 
-        // set up of ChromeDriver, can use Firefox, etc
-        // Also I follow Singleton pattern, so I would create separate class Driver where I do all the set up
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().fullscreen();
 
         // execution:
         // user navigates to www.amazon.com
-        driver.get("http://www.amazon.com");
+        Driver.getDriver().get("http://www.amazon.com");
         // searched for Alexa
-        driver.findElement(By.id(searchBox_id)).sendKeys(nameToSearch + Keys.ENTER);
+        Driver.getDriver().findElement(By.id(searchBox_id)).sendKeys(nameToSearch + Keys.ENTER);
 
-        String itemAdded = driver.findElement(By.xpath(thirdItemResult_XPATH)).getText();
+        String itemAdded = Driver.getDriver().findElement(By.xpath(thirdItemResult_XPATH)).getText();
 
         //selects the third item
-        driver.findElement(By.xpath(thirdItemResult_XPATH)).click();
+        Driver.getDriver().findElement(By.xpath(thirdItemResult_XPATH)).click();
         Thread.sleep(2000); // wait until page fully loaded
         // user adds item to cart
-        driver.findElement(By.id(addToCartButton_id)).click();
+        Driver.getDriver().findElement(By.id(addToCartButton_id)).click();
         Thread.sleep(2000); // wait until any pop up window shows up (if present)
 
-        if (driver.findElement(By.xpath("//button[@aria-label='Close']")).isDisplayed()) {
-            driver.findElement(By.xpath("//button[@aria-label='Close']")).click();
+        if (Driver.getDriver().findElement(By.xpath("//button[@aria-label='Close']")).isDisplayed()) {
+            Driver.getDriver().findElement(By.xpath("//button[@aria-label='Close']")).click();
         }
 
-        driver.findElement(By.id(cartButton_id)).click();
+        Driver.getDriver().findElement(By.id(cartButton_id)).click();
 
-        String actualItemInCart = driver.findElement(By.xpath(itemInCart_xpath)).getText();
+        String actualItemInCart = Driver.getDriver().findElement(By.xpath(itemInCart_xpath)).getText();
 
         if(actualItemInCart.contains(itemAdded)){
             System.out.println("User is able to add item to cart - PASS");
