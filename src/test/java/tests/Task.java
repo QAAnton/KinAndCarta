@@ -55,6 +55,8 @@ public class Task {
         // Assertion of item in cart was the item added
         Assert.assertTrue(actualItemInCart.contains(itemAdded));
 
+        Driver.quitDriver();
+
 
 
         }
